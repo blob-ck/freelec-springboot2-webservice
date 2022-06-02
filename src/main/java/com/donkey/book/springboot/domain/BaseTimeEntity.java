@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass // Jpa Entity 클래스들이 BaseTimeEntity를 상속할 경우 아래 멤버도 컬럼으로 인식시킴
 @EntityListeners(AuditingEntityListener.class) // Jpa Auditing 기능 포함
-public class BaseTimeEntity {
+public abstract class BaseTimeEntity {
 
     @CreatedDate
     private LocalDateTime createdDate;
