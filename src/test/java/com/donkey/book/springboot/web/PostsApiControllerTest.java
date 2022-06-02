@@ -69,19 +69,19 @@ public class PostsApiControllerTest {
     public void posts_수정된다() throws Exception {
         //given
         Posts savedPosts = postsRepository.save(Posts.builder()
-                                                        .title("제목")
-                                                        .content("내용")
-                                                        .author("작성자")
-                                                        .build());
+                .title("제목")
+                .content("내용")
+                .author("작성자")
+                .build());
 
         Long updateId = savedPosts.getId();
         String expectedTitle = "[수정됨]제목";
         String expectedContent = "[수정됨]내용";
 
         PostsUpdateRequestDto requestDto = PostsUpdateRequestDto.builder()
-                                                                .title(expectedTitle)
-                                                                .content(expectedContent)
-                                                                .build();
+                .title(expectedTitle)
+                .content(expectedContent)
+                .build();
 
         String url = "http://localhost:" + port + "/api/v1/posts/" + updateId;
 
