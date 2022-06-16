@@ -48,7 +48,7 @@ jobs:
         
       # Connect S3 for uploading application jar
       - name: Make zip file
-        run: zip -r ./$GITHUB_SHA.zip
+        run: zip -r ./$GITHUB_SHA.zip .
         shell: bash
         
       - name: Configure AWS Credentials
