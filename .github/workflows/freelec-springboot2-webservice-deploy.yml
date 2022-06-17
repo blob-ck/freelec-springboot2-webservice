@@ -45,12 +45,15 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         shell: bash
-        
+
       # Connect S3 for uploading application jar
-      - name: Make zip file
-        run: zip -r ./$GITHUB_SHA.zip .
+      - name: Zip and Move Before Deploy
+        run: |
+          zip -r $PROJECT_NAME *
+          mkdir -p deploy
+          mv $PROJECT_NAME.zip deploy/$PROJECT_NAME.zip
         shell: bash
-        
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with: # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#contexts
@@ -61,8 +64,8 @@ jobs:
         # AWS CLI Command
         # https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html#using-s3-commands-managing-objects
       - name: Upload jar to S3
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
-        
+        run: aws s3 cp --region ap-northeast-2 ./deploy/$PROJECT_NAME.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$PROJECT_NAME.zip
+
         # CodeDeploy settings
       - name: Code Deploy
-        run: aws deploy create-deployment -- application-name freelec-springboot2-webservice-deploy -- deployment-config-name CodeDeployDefault.AllAtOnce -- deployment-group-name develop -- s3-location bucket=$SS3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws deploy create-deployment -- application-name freelec-springboot2-webservice-deploy -- deployment-config-name CodeDeployDefault.AllAtOnce -- deployment-group-name develop -- s3-location bucket=$SS3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$PROJECT_NAME.zip
