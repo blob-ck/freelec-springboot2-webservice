@@ -18,6 +18,8 @@ do
   RESPONSE=$(curl -s ${IDLE_PROFILE_URL})
   UP_COUNT=$(echo ${RESPONSE} | grep 'real' | wc -l)
 
+  echo ">> ${UP_COUNT} 번째 시도중..."
+
   if [ ${UP_COUNT} -ge 1 ]
   then # $up_count >= 1 ("real" 문자열이 있는지 검증)
     echo "> Health check 성공"
