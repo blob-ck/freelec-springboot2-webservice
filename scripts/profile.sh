@@ -3,7 +3,7 @@
 # 쉬고 있는 profile 찾기: real1 or real2
 
 function find_idle_profile() {
-  RESPONSE_CODE=$(crul -s -o /dev/null -w "%{http_code}" http://localhost/profile)
+  RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/profile)
 
   if [ ${RESPONSE_CODE} -ge 400 ] # status code 가 400 보다 크면(즉 4xx, 5xx 에러 발생시)
   then
